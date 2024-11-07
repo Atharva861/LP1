@@ -1,0 +1,3 @@
+-   MOV R 1
+-   ADD AX R
+CLC
