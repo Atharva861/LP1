@@ -1,0 +1,42 @@
+#include <DHT.h>
+
+#define DHTPIN 4       // Pin where the DHT11 data is connected
+#define DHTTYPE DHT11     // Define the sensor type (DHT11 or DHT22)
+#define BUZ_PIN 13        // Pin where the LED is connected
+
+DHT dht(DHTPIN, DHTTYPE); // Initialize DHT sensor
+float thresholdTemp = 34.0; // Set your temperature threshold in Celsius
+
+void setup() {
+  Serial.begin(9600);     // Start serial communication
+  dht.begin();            // Initialize the DHT sensor
+  pinMode(BUZ_PIN, OUTPUT); // Set LED pin as output
+}
+
+void loop() {
+  // Wait a few seconds between readings
+  delay(2000);
+  
+  // Read the temperature in Celsius
+  float temperature = dht.readTemperature();
+  
+  // Check if the reading failed
+  if (isnan(temperature)) {
+    Serial.println("Failed to read from DHT sensor!");
+    return;
+  }
+
+  // Print the temperature to the Serial Monitor
+  Serial.print("Temperature: ");
+  Serial.print(temperature);
+  Serial.println(" °C");
+
+  // If temperature exceeds threshold, turn on LED
+  if (temperature > thresholdTemp) {
+    digitalWrite(BUZ_PIN, HIGH); // Turn LED on
+    Serial.println("Temperature threshold exceeded! LED ON.");
+  } else {
+    digitalWrite(BUZ_PIN, LOW); // Turn LED off
+    Serial.println("Temperature normal. LED OFF.");
+  }
+}

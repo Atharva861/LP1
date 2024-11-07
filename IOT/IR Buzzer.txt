@@ -1,0 +1,23 @@
+// Define pin numbers
+const int irSensorPin = 7;   // IR sensor output connected to digital pin 7
+const int buzzerPin = 8;      // Buzzer connected to digital pin 8
+
+void setup() {
+  pinMode(irSensorPin, INPUT);  // Set the IR sensor pin as an input
+  pinMode(buzzerPin, OUTPUT);   // Set the buzzer pin as an output
+  Serial.begin(9600);           // Initialize serial communication for debugging
+}
+
+void loop() {
+  int sensorState = digitalRead(irSensorPin);  // Read the IR sensor state
+
+  if (sensorState == LOW) {  // Obstacle detected (sensor output HIGH)
+    digitalWrite(buzzerPin, HIGH);  // Activate the buzzer
+    Serial.println("Obstacle detected! Buzzer ON");
+  } else {  // No obstacle detected (sensor output LOW)
+    digitalWrite(buzzerPin, LOW);  // Deactivate the buzzer
+    Serial.println("No obstacle. Buzzer OFF");
+  }
+
+  delay(100);  // Small delay for stable readings
+}
